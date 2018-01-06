@@ -11,9 +11,16 @@ import CoreData
 
 protocol CreateCompanyControllerDelegate {
     func didAddCompany(company: Company)
+    func didEditCompany(company: Company)
 }
 
 class CreateCompanyController: UIViewController {
+    
+    var company: Company? {
+        didSet {
+            nameTextField.text = company?.name
+        }
+    }
     
     // not tightly-coupled
     var delegate: CreateCompanyControllerDelegate?
@@ -32,12 +39,23 @@ class CreateCompanyController: UIViewController {
         return tf
     }()
     
+    let datePicker: UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.translatesAutoresizingMaskIntoConstraints = false
+        return dp
+    }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.title = company == nil ? "Create Company" : "Edit Company"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.lightBlue
         setupUI()
 
-        navigationItem.title = "create company"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(self.handleSave))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(self.handleCancel))
     }
@@ -68,7 +86,30 @@ class CreateCompanyController: UIViewController {
         nameTextField.topAnchor.constraint(equalTo: nameLabel.topAnchor).isActive = true
     }
     
-    @objc func handleSave() {
+    @objc fileprivate func handleSave() {
+        if company == nil {
+            createCompany()
+        } else {
+            saveCompanyChanges()
+        }
+    }
+    
+    fileprivate func saveCompanyChanges() {
+        
+        let context = CoreDataManager.shared.persistentContainer.viewContext
+        company?.name = nameTextField.text
+        
+        do {
+            try context.save()
+        } catch let err {
+            print("failed to save company changes:",err)
+        }
+        dismiss(animated: true) {
+            self.delegate?.didEditCompany(company: self.company!)
+        }
+    }
+    
+    fileprivate func createCompany() {
         //put in context
         let context = CoreDataManager.shared.persistentContainer.viewContext
         let company = NSEntityDescription.insertNewObject(forEntityName: "Company", into: context)
@@ -86,9 +127,9 @@ class CreateCompanyController: UIViewController {
         } catch let error {
             print("failed to save company context in coredata:",error)
         }
-
-
     }
+
+    
     
     @objc func handleCancel() {
         dismiss(animated: true, completion: nil)
