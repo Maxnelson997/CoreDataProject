@@ -8,6 +8,12 @@
 
 import UIKit
 
+extension UINavigationController {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+}
+
 class CustomNavigationController:UINavigationController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

@@ -9,7 +9,7 @@
 import CoreData
 
 struct CoreDataManager {
-    
+
     static let shared = CoreDataManager()
     
     let persistentContainer: NSPersistentContainer = {
@@ -21,5 +21,35 @@ struct CoreDataManager {
         }
         return container
     }()
+    
+    func fetchCompanies() -> [Company] {
+        let context = persistentContainer.viewContext
+        
+        let fetchRequest = NSFetchRequest<Company>(entityName: "Company")
+        
+        do {
+            let companies = try context.fetch(fetchRequest)
+            return companies
+        } catch let error {
+            print("failed to fetch companies from core data:",error)
+            return []
+        }
+    }
+    
+    func createEmployee(name: String, birthday: Date, company: Company) -> (Employee?, Error?) {
+        let context = persistentContainer.viewContext
+        let employee = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context) as! Employee
+        employee.setValue(name, forKey: "name")
+        employee.company = company
+        let employeeInformation = NSEntityDescription.insertNewObject(forEntityName: "EmployeeInformation", into: context) as! EmployeeInformation
+        employeeInformation.taxId = "123"
+        employeeInformation.birthday = birthday
+        employee.employeeInformation = employeeInformation
+        do {
+            try context.save(); return (employee, nil)
+        } catch let err {
+            print("failed to add employee to core data",err); return (nil, err)
+        }
+    }
     
 }
