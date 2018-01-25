@@ -46,9 +46,22 @@ class CreateEmployeeController: UIViewController {
         return tf
     }()
     
+    let employeeTypeSegmentedControl: UISegmentedControl = {
+        let types = [
+            EmployeeType.Executive.rawValue,
+            EmployeeType.SeniorManagement.rawValue,
+            EmployeeType.Simpleton.rawValue,
+            EmployeeType.Intern.rawValue
+        ]
+        let sc = UISegmentedControl(items: types)
+        sc.selectedSegmentIndex = 0
+        sc.tintColor = .darkBlue
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        return sc
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .darkBlue
         navigationItem.title = "Add Employee"
         setupCancelButton()
@@ -58,7 +71,7 @@ class CreateEmployeeController: UIViewController {
     }
     
     func setupUI() {
-        _ = setupLightBlueBackgroundView(height: 100)
+        _ = setupLightBlueBackgroundView(height: 150)
         
         view.addSubview(nameLabel)
         nameLabel.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -83,6 +96,13 @@ class CreateEmployeeController: UIViewController {
         birthdayTextField.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         birthdayTextField.bottomAnchor.constraint(equalTo: birthdayLabel.bottomAnchor).isActive = true
         birthdayTextField.topAnchor.constraint(equalTo: birthdayLabel.topAnchor).isActive = true
+        
+        view.addSubview(employeeTypeSegmentedControl)
+        employeeTypeSegmentedControl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16).isActive = true
+        employeeTypeSegmentedControl.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16).isActive = true
+        employeeTypeSegmentedControl.topAnchor.constraint(equalTo: birthdayLabel.bottomAnchor, constant: 0).isActive = true
+        employeeTypeSegmentedControl.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        
     }
     
 
@@ -94,18 +114,22 @@ class CreateEmployeeController: UIViewController {
         guard let birthdayText = birthdayTextField.text else { return }
     
         if birthdayText.isEmpty {
-            view.showError(title: "Day of birth empty", message: "Enter that junk ASAP.")
+            let err = view.showError(title: "Day of birth empty", message: "Enter that junk ASAP.")
+            present(err, animated: true, completion: nil)
             return
         }
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
         guard let birthdayDate = dateFormatter.date(from: birthdayText) else {
-            view.showError(title: "Garbage Date", message: "You ever learn to format a date properly, boi?")
+            let err = view.showError(title: "Garbage Date", message: "You ever learn to format a date properly, boi?")
+            present(err, animated: true, completion: nil)
             return
         }
         
-        let tuple = CoreDataManager.shared.createEmployee(name: empName, birthday: birthdayDate, company: company)
+        guard let employeeType = employeeTypeSegmentedControl.titleForSegment(at: employeeTypeSegmentedControl.selectedSegmentIndex) else { return }
+        
+        let tuple = CoreDataManager.shared.createEmployee(name: empName, employeeType: employeeType, birthday: birthdayDate, company: company)
         if let err = tuple.1 {
             //tell dat user wtf is up.
             print(err)

@@ -33,9 +33,9 @@ extension UIView {
         }
     }
     
-    func showError(title: String, message: String) {
+    func showError(title: String, message: String) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "unk", style: .default, handler: nil))
-        self.present(alertController, animated: true, completion: nil)
+        return alertController
     }
 }

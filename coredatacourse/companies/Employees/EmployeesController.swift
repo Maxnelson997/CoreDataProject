@@ -9,6 +9,14 @@
 import UIKit
 import CoreData
 
+class TabbedLabel: UILabel {
+    
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: UIEdgeInsetsInsetRect(rect, UIEdgeInsetsMake(0, 16, 0, 0)))
+    }
+    
+}
+
 class EmployeeCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -24,15 +32,31 @@ class EmployeeCell: UITableViewCell {
 class EmployeesController: UITableViewController, CreateEmployeeControllerDelegate {
     
     func didAddEmployee(employee: Employee) {
-        employees.append(employee)
-        tableView.reloadData()
+//        employees.append(employee)
+//        tableView.reloadData()
+
+        guard let employeeType = employee.type else { return }
+        guard let section = employeeTypes.index(of: employeeType) else { return }
+        let row = allEmployees[section].count
+        let insertionIP = IndexPath(row: row, section: section)
+        allEmployees[section].append(employee)
+        tableView.insertRows(at: [insertionIP], with: .middle)
     }
     
     var company: Company?
     
     var employees = [Employee]()
     var cellId = "cellId"
+
+    var allEmployees = [[Employee]]()
     
+    var employeeTypes = [
+        EmployeeType.Executive.rawValue,
+        EmployeeType.SeniorManagement.rawValue,
+        EmployeeType.Simpleton.rawValue,
+        EmployeeType.Intern.rawValue
+    ]
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.title = company?.name
@@ -40,7 +64,12 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
     
     private func fetchEmployees() {
         guard let companyEmployees = company?.employees?.allObjects as? [Employee] else { return }
-        self.employees = companyEmployees
+        allEmployees = []
+        for employeeType in employeeTypes {
+            allEmployees.append(companyEmployees.filter { $0.type == employeeType })
+        }
+        
+//        self.employees = companyEmployees
         
 //        print("attempting to fetch emps")
 //        let context = CoreDataManager.shared.persistentContainer.viewContext
@@ -59,12 +88,31 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return employees.count
+        return allEmployees[section].count
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return allEmployees.count
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = TabbedLabel()
+        label.text = employeeTypes[section]
+        label.backgroundColor = .lightBlue
+        label.textColor = .darkBlue
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EmployeeCell
-        let employee = employees[indexPath.row]
+
+        let employee = allEmployees[indexPath.section][indexPath.row]
+    
         cell.textLabel?.text = employee.name
         if let birthday = employee.employeeInformation?.birthday {
             let dateFormatter = DateFormatter()
@@ -86,7 +134,7 @@ class EmployeesController: UITableViewController, CreateEmployeeControllerDelega
         setupPlusButtonInNavBar(selector: #selector(handleAdd))
         tableView.register(EmployeeCell.self, forCellReuseIdentifier: cellId)
     }
-    
+
     @objc func handleAdd() {
         let employeeController = CreateEmployeeController()
         employeeController.delegate = self
