@@ -114,8 +114,16 @@ class CompaniesAutoUpdateController: UITableViewController, NSFetchedResultsCont
 //            print(company.name ?? "")
 //        })
     
-        Service.shared.downloadCompaniesFromServer()
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh), for: .valueChanged)
+        refreshControl.tintColor = .white
+        self.refreshControl = refreshControl
         
+    }
+    
+    @objc func handleRefresh() {
+        Service.shared.downloadCompaniesFromServer()
+        self.refreshControl?.endRefreshing()
     }
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -148,6 +156,10 @@ class CompaniesAutoUpdateController: UITableViewController, NSFetchedResultsCont
         return 50
     }
     
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let employeesController = EmployeesController()
+        employeesController.company = fetchedResultsController.object(at: indexPath)
+        navigationController?.pushViewController(employeesController, animated: true)
+    }
     
 }
