@@ -19,6 +19,7 @@ class CompanyCell: UITableViewCell {
                 nameFoundedDateLabel.text = "\(name) - Founded: \(dateFormatter.string(from: founded))"
             } else {
                 nameFoundedDateLabel.text = company.name
+                nameFoundedDateLabel.text = "\(company.name ?? "") \(company.numEmployees ?? "")"
             }
             if let imageData = company.imageData {
                 companyImageView.image = UIImage(data: imageData)

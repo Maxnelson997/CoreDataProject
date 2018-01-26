@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7910D98A2000673F00152696 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7910D9892000673F00152696 /* CoreDataManager.swift */; };
+		79405B81201AC769004C5EFD /* Modelv1.1_2.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 79405B80201AC769004C5EFD /* Modelv1.1_2.xcmappingmodel */; };
+		79405B83201AC895004C5EFD /* CustomMigrationPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79405B82201AC895004C5EFD /* CustomMigrationPolicy.swift */; };
 		79410F8A20184DBB0006CD88 /* EmployeeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79410F8920184DBB0006CD88 /* EmployeeType.swift */; };
 		7949B9372016B07700D2C2C8 /* CompanyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7949B9362016B07700D2C2C8 /* CompanyCell.swift */; };
 		7949B93A2016B21200D2C2C8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7949B9392016B21200D2C2C8 /* Extensions.swift */; };
@@ -32,6 +34,9 @@
 
 /* Begin PBXFileReference section */
 		7910D9892000673F00152696 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		7925395D201ABD2E0081C7BB /* IntermediateTraining_v1.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IntermediateTraining_v1.1.xcdatamodel; sourceTree = "<group>"; };
+		79405B80201AC769004C5EFD /* Modelv1.1_2.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Modelv1.1_2.xcmappingmodel; sourceTree = "<group>"; };
+		79405B82201AC895004C5EFD /* CustomMigrationPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMigrationPolicy.swift; sourceTree = "<group>"; };
 		79410F8920184DBB0006CD88 /* EmployeeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeType.swift; sourceTree = "<group>"; };
 		7949B9362016B07700D2C2C8 /* CompanyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyCell.swift; sourceTree = "<group>"; };
 		7949B9392016B21200D2C2C8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -52,6 +57,7 @@
 		794AD166200037FE00026585 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		794AD168200039D300026585 /* CreateCompanyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCompanyController.swift; sourceTree = "<group>"; };
 		794AD18C20005EA800026585 /* IntermediateTraining.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IntermediateTraining.xcdatamodel; sourceTree = "<group>"; };
+		79776EE1201AC63700B6D663 /* IntermediateTraining_v1.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = IntermediateTraining_v1.2.xcdatamodel; sourceTree = "<group>"; };
 		79E7C97920194E15009AF80E /* CompaniesAutoUpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesAutoUpdateController.swift; sourceTree = "<group>"; };
 		79E7C97B201AA091009AF80E /* service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = service.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -130,6 +136,8 @@
 				794AD16420001C0500026585 /* UIColor.theme.swift */,
 				794AD168200039D300026585 /* CreateCompanyController.swift */,
 				794AD18B20005EA800026585 /* IntermediateTraining.xcdatamodeld */,
+				79405B80201AC769004C5EFD /* Modelv1.1_2.xcmappingmodel */,
+				79405B82201AC895004C5EFD /* CustomMigrationPolicy.swift */,
 				7910D9892000673F00152696 /* CoreDataManager.swift */,
 				7949B9392016B21200D2C2C8 /* Extensions.swift */,
 			);
@@ -224,8 +232,10 @@
 				7949B93C2016B8B300D2C2C8 /* CompaniesController+CreateCompany.swift in Sources */,
 				794AD15120000CC200026585 /* AppDelegate.swift in Sources */,
 				7910D98A2000673F00152696 /* CoreDataManager.swift in Sources */,
+				79405B81201AC769004C5EFD /* Modelv1.1_2.xcmappingmodel in Sources */,
 				794AD169200039D300026585 /* CreateCompanyController.swift in Sources */,
 				79410F8A20184DBB0006CD88 /* EmployeeType.swift in Sources */,
+				79405B83201AC895004C5EFD /* CustomMigrationPolicy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,9 +425,11 @@
 		794AD18B20005EA800026585 /* IntermediateTraining.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				79776EE1201AC63700B6D663 /* IntermediateTraining_v1.2.xcdatamodel */,
+				7925395D201ABD2E0081C7BB /* IntermediateTraining_v1.1.xcdatamodel */,
 				794AD18C20005EA800026585 /* IntermediateTraining.xcdatamodel */,
 			);
-			currentVersion = 794AD18C20005EA800026585 /* IntermediateTraining.xcdatamodel */;
+			currentVersion = 79776EE1201AC63700B6D663 /* IntermediateTraining_v1.2.xcdatamodel */;
 			path = IntermediateTraining.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
